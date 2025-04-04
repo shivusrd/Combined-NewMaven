@@ -155,7 +155,7 @@
 				<configuration>
 					<suiteXmlFiles>
 
-						<suiteXmlFile>${testngpath}</suiteXmlFile>
+						 <suiteXmlFile>${testngFile}</suiteXmlFile>
 					</suiteXmlFiles>
 
 				</configuration>
