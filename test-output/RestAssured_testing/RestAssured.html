@@ -1,0 +1,209 @@
+<html>
+<head>
+<title>TestNG:  RestAssured</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>RestAssured</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>10/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Fri Apr 04 16:16:21 IST 2025</td>
+</tr>
+<tr><td>Total time:</td><td>7 seconds (7596 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='restassured.Test01_GET.test03()'><b>test03</b><br>Test class: restassured.Test01_GET<br/>
+<a href="#Output-410033330" onClick='toggleBox("Output-410033330", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-410033330" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-410033330">
+Testcase test03 started successfully<br/>
+Testcase test03 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>1</td>
+<td>restassured.Test01_GET@72a85671</td></tr>
+<tr>
+<td title='restassured.Test02_POST.test02_put()'><b>test02_put</b><br>Test class: restassured.Test02_POST<br/>
+<a href="#Output-1692381981" onClick='toggleBox("Output-1692381981", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1692381981" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1692381981">
+Testcase test02_put started successfully<br/>
+Testcase test02_put passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test02_POST@346a361</td></tr>
+<tr>
+<td title='restassured.Test02_POST.test03_patch()'><b>test03_patch</b><br>Test class: restassured.Test02_POST<br/>
+<a href="#Output-804559024" onClick='toggleBox("Output-804559024", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-804559024" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-804559024">
+Testcase test03_patch started successfully<br/>
+Testcase test03_patch passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test02_POST@346a361</td></tr>
+<tr>
+<td title='restassured.Test04_POST.Test04()'><b>Test04</b><br>Test class: restassured.Test04_POST<br/>
+<a href="#Output-223363383" onClick='toggleBox("Output-223363383", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-223363383" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-223363383">
+Testcase Test04 started successfully<br/>
+Testcase Test04 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test04_POST@1643d68f</td></tr>
+<tr>
+<td title='restassured.Test01_GET.test01()'><b>test01</b><br>Test class: restassured.Test01_GET<br/>
+<a href="#Output-105194717" onClick='toggleBox("Output-105194717", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-105194717" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-105194717">
+Testcase test01 started successfully<br/>
+Testcase test01 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>1</td>
+<td>restassured.Test01_GET@72a85671</td></tr>
+<tr>
+<td title='restassured.Test02_POST.test04_delete()'><b>test04_delete</b><br>Test class: restassured.Test02_POST<br/>
+<a href="#Output-1478683866" onClick='toggleBox("Output-1478683866", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1478683866" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1478683866">
+Testcase test04_delete started successfully<br/>
+Testcase test04_delete passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test02_POST@346a361</td></tr>
+<tr>
+<td title='restassured.Test01_GET.test02()'><b>test02</b><br>Test class: restassured.Test01_GET<br/>
+<a href="#Output-1359382959" onClick='toggleBox("Output-1359382959", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1359382959" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1359382959">
+Testcase test02 started successfully<br/>
+Testcase test02 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test01_GET@72a85671</td></tr>
+<tr>
+<td title='restassured.Test02_Get.test_01()'><b>test_01</b><br>Test class: restassured.Test02_Get<br/>
+<a href="#Output-284427775" onClick='toggleBox("Output-284427775", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-284427775" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-284427775">
+Testcase test_01 started successfully<br/>
+Testcase test_01 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>1</td>
+<td>restassured.Test02_Get@631e06ab</td></tr>
+<tr>
+<td title='restassured.Test02_POST.test01_post()'><b>test01_post</b><br>Test class: restassured.Test02_POST<br/>
+<a href="#Output-545580634" onClick='toggleBox("Output-545580634", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-545580634" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-545580634">
+Testcase test01_post started successfully<br/>
+Testcase test01_post passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test02_POST@346a361</td></tr>
+<tr>
+<td title='restassured.Test03_GET.Test03()'><b>Test03</b><br>Test class: restassured.Test03_GET<br/>
+<a href="#Output-929757060" onClick='toggleBox("Output-929757060", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-929757060" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-929757060">
+Testcase Test03 started successfully<br/>
+Testcase Test03 passed successfully<br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>restassured.Test03_GET@107ed6fc</td></tr>
+</table><p>
+</body>
+</html>

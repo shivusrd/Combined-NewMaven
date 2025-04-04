@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [RestAssured_testing]" guice-stage="DEVELOPMENT">
+  <parameter name="enableLogs" value="true"/>
+  <parameter name="enableExtentReports" value="true"/>
+  <listeners>
+    <listener class-name="listeners.Listners"/>
+    <listener class-name="listeners.Report_log"/>
+  </listeners>
+  <test thread-count="5" name="RestAssured(failed)">
+    <classes>
+      <class name="restassured.Test01_GET">
+        <methods>
+          <include name="test02"/>
+          <include name="test01"/>
+          <include name="test03"/>
+          <include name="tearDownExtentReport"/>
+          <include name="recordResult"/>
+          <include name="beforeMethod"/>
+          <include name="setupExtentReport"/>
+          <include name="tearDown"/>
+          <include name="setupClass"/>
+          <include name="setupBrowser"/>
+        </methods>
+      </class> <!-- restassured.Test01_GET -->
+    </classes>
+  </test> <!-- RestAssured(failed) -->
+</suite> <!-- Failed suite [RestAssured_testing] -->

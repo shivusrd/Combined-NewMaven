@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Bikewale_testing]" guice-stage="DEVELOPMENT">
+  <parameter name="enableLogs" value="true"/>
+  <parameter name="enableExtentReports" value="true"/>
+  <parameter name="browser" value="chrome"/>
+  <parameter name="captureScreenshots" value="true"/>
+  <parameter name="url" value="https://www.bikewale.com/"/>
+  <listeners>
+    <listener class-name="listeners.Listners"/>
+    <listener class-name="listeners.Report_log"/>
+  </listeners>
+  <test thread-count="5" name="Bikewale(failed)">
+    <classes>
+      <class name="bikewale.Bikewale_test">
+        <methods>
+          <include name="loginBikewale"/>
+          <include name="tearDownExtentReport"/>
+          <include name="launchBikewale"/>
+          <include name="recordResult"/>
+          <include name="beforeMethod"/>
+          <include name="setupExtentReport"/>
+          <include name="tearDown"/>
+          <include name="setupBrowser"/>
+        </methods>
+      </class> <!-- bikewale.Bikewale_test -->
+    </classes>
+  </test> <!-- Bikewale(failed) -->
+</suite> <!-- Failed suite [Bikewale_testing] -->

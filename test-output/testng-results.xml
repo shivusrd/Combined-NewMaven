@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+    <line>
+      <![CDATA[About to begin executing Class Bikewale]]>
+    </line>
+    <line>
+      <![CDATA[Testcase loginBikewale started successfully]]>
+    </line>
+    <line>
+      <![CDATA[Testcase loginBikewale passed successfully]]>
+    </line>
+  </reporter-output>
+  <suite started-at="2025-04-05T00:47:18 IST" name="Bikewale_testing" finished-at="2025-04-05T00:48:09 IST" duration-ms="50938">
+    <groups>
+      <group name="smoke">
+        <method signature="Bikewale_test.loginBikewale()[pri:0, instance:bikewale.Bikewale_test@186978a6]" name="loginBikewale" class="bikewale.Bikewale_test"/>
+      </group> <!-- smoke -->
+    </groups>
+    <test started-at="2025-04-05T00:47:18 IST" name="Bikewale" finished-at="2025-04-05T00:48:09 IST" duration-ms="50938">
+      <class name="bikewale.Bikewale_test">
+        <test-method is-config="true" signature="setupExtentReport()[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:47:17 IST" name="setupExtentReport" finished-at="2025-04-05T00:47:18 IST" duration-ms="449" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupExtentReport -->
+        <test-method is-config="true" signature="setupBrowser(java.lang.String,java.lang.Boolean,boolean)[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:47:18 IST" name="setupBrowser" finished-at="2025-04-05T00:47:23 IST" duration-ms="5579" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[chrome]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[true]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[true]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupBrowser -->
+        <test-method is-config="true" signature="launchBikewale(java.lang.String)[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:47:23 IST" name="launchBikewale" finished-at="2025-04-05T00:47:26 IST" depends-on-methods="baselibrary.Baselibrary.setupBrowser" duration-ms="2678" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[https://www.bikewale.com/]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- launchBikewale -->
+        <test-method is-config="true" signature="beforeMethod(java.lang.reflect.Method)[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:47:26 IST" name="beforeMethod" finished-at="2025-04-05T00:47:26 IST" duration-ms="31" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void bikewale.Bikewale_test.loginBikewale()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="loginBikewale()[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:47:26 IST" name="loginBikewale" finished-at="2025-04-05T00:48:05 IST" duration-ms="38410" status="PASS">
+          <reporter-output>
+            <line>
+              <![CDATA[Testcase loginBikewale started successfully]]>
+            </line>
+            <line>
+              <![CDATA[Testcase loginBikewale passed successfully]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- loginBikewale -->
+        <test-method is-config="true" signature="recordResult(org.testng.ITestResult)[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:48:05 IST" name="recordResult" finished-at="2025-04-05T00:48:06 IST" duration-ms="1161" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=loginBikewale status=SUCCESS method=Bikewale_test.loginBikewale()[pri:0, instance:bikewale.Bikewale_test@186978a6] output=Testcase loginBikewale started successfully]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- recordResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:48:06 IST" name="tearDown" finished-at="2025-04-05T00:48:09 IST" duration-ms="2837" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="tearDownExtentReport()[pri:0, instance:bikewale.Bikewale_test@186978a6]" started-at="2025-04-05T00:48:09 IST" name="tearDownExtentReport" finished-at="2025-04-05T00:48:10 IST" duration-ms="875" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownExtentReport -->
+      </class> <!-- bikewale.Bikewale_test -->
+    </test> <!-- Bikewale -->
+  </suite> <!-- Bikewale_testing -->
+</testng-results>
