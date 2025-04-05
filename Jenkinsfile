@@ -18,14 +18,18 @@ pipeline {
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
-        stage('Build and Test') {
+        stage('Build and Test (Inside Docker)') {
             agent {
                 docker {
-                    image 'my-maven-test-image' // Use your custom Docker image
+                    image 'my-jenkins-dind' // Run this stage inside your custom Jenkins image with Docker
+                    alwaysPull false // Only pull if the image is not present
+                    reuseNode true // Keep the agent node for subsequent steps in this stage
                 }
             }
             steps {
-                sh "mvn clean install -B" // Build and run tests inside the container
+                sh 'docker --version' // Verify Docker is available
+                sh 'mvn --version'    // Verify Maven is available (should be in the base jenkins/maven image)
+                sh "docker run --rm -v $(pwd):/app -w /app my-maven-test-image mvn clean install -B -DtestngFile=${params.TESTNG_XML} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
             }
         }
         stage('Post-build Actions') {
