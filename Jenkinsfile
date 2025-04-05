@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none // Define agent per stage
 
     parameters {
         string(name: 'TESTNG_XML', defaultValue: 'XML/Bikewale.xml', description: 'Path to the TestNG XML file to execute')
@@ -12,45 +12,30 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            agent any
             steps {
                 git credentialsId: 'a6728bc9-9c97-49b7-854c-268fd3eb5c64',
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
-        stage('Build') {
-            steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn clean compile'
-                    } else {
-                        bat 'mvn clean compile'
-                    }
+        stage('Build and Test') {
+            agent {
+                docker {
+                    image 'my-maven-test-image' // Use your custom Docker image
                 }
             }
-        }
-        stage('Test') {
             steps {
-                script {
-                    def testngXml = params.TESTNG_XML
-                    echo "TESTNG_XML parameter value: ${testngXml}" // For debugging
-                    def mvnCommand = "mvn test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
-
-                    if (isUnix()) {
-                        sh mvnCommand
-                    } else {
-                        bat mvnCommand
-                    }
-                }
-                // No 'testng' step as we are only using Extent Reports
+                sh "mvn clean install -B" // Build and run tests inside the container
             }
         }
         stage('Post-build Actions') {
+            agent any
             steps {
-                archiveArtifacts 'reports/ExtentReport.html' // Still good practice to archive
+                archiveArtifacts 'reports/ExtentReport.html'
                 publishHTML([allowMissing: false,
-                             alwaysLinkToLastBuild: true, // Link to the report of the last build
+                             alwaysLinkToLastBuild: true,
                              keepAll: false,
-                             reportDir: 'reports', // The directory containing your HTML report in the workspace
+                             reportDir: 'reports',
                              reportFiles: 'ExtentReport.html',
                              reportName: 'Extent Report'])
             }
