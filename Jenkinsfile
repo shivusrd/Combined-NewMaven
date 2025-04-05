@@ -1,5 +1,5 @@
 pipeline {
-    agent none // Define agent per stage
+    agent any
 
     parameters {
         string(name: 'TESTNG_XML', defaultValue: 'XML/Bikewale.xml', description: 'Path to the TestNG XML file to execute')
@@ -12,28 +12,25 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            agent any
             steps {
                 git credentialsId: 'a6728bc9-9c97-49b7-854c-268fd3eb5c64',
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
-        stage('Build and Test (Inside Docker)') {
-            agent {
-                docker {
-                    image 'my-jenkins-dind'
-                    alwaysPull false
-                    reuseNode true
-                }
+        stage('Build and Test') {
+            tools {
+                maven 'MAVEN_HOME' // Use the Maven tool configured in Global Tool Configuration
             }
             steps {
-                sh 'docker --version'
-                sh 'mvn --version'
-                sh '''docker run --rm -v $(pwd):/app -w /app my-maven-test-image mvn clean install -B -DtestngFile=${params.TESTNG_XML} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}'''
+                script {
+                    def testngXml = params.TESTNG_XML
+                    echo "TESTNG_XML parameter value: ${testngXml}"
+                    def mvnCommand = "mvn clean test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
+                    bat mvnCommand
+                }
             }
         }
         stage('Post-build Actions') {
-            agent any
             steps {
                 archiveArtifacts 'reports/ExtentReport.html'
                 publishHTML([allowMissing: false,
