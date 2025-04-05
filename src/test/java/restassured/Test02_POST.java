@@ -1,85 +1,158 @@
 package restassured;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.aventstack.extentreports.Status;
+import io.restassured.RestAssured;
+import io.restassured.config.LogConfig;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.aventstack.extentreports.gherkin.model.Given;
-import com.google.gson.JsonObject;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import baselibrary.Baselibrary;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-import org.testng.annotations.Test;
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 
 public class Test02_POST extends Baselibrary {
 
-	@BeforeClass
-	public void setupClass() {
-		RestAssured.useRelaxedHTTPSValidation();
-		logger.info("Relaxed HTTPS Validation enabled for this class.");
-	}
+    private ByteArrayOutputStream requestLogOutputStream;
+    private PrintStream requestLogPrintStream;
+    private ByteArrayOutputStream responseLogOutputStream;
+    private PrintStream responseLogPrintStream;
 
-	@Test
-	public void test01_post() {
-		logger.info("Starting test01_post - POST https://reqres.in/api/users");
+    @BeforeClass
+    public void setupClass() {
+        RestAssured.useRelaxedHTTPSValidation();
+        RestAssured.config = RestAssured.config().logConfig(LogConfig.logConfig().enablePrettyPrinting(true));
 
-		JSONObject req = new JSONObject();
-		req.put("name", "shivam");
-		req.put("job", "QA");
-		logger.info("Request body: " + req.toJSONString());
+        requestLogOutputStream = new ByteArrayOutputStream();
+        requestLogPrintStream = new PrintStream(requestLogOutputStream);
+        RestAssured.filters(new RequestLoggingFilter(requestLogPrintStream));
 
-		given().header("Content-Type", "application/json") // Corrected Content-Type
-				.contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString()).when()
-				.post("https://reqres.in/api/users").then().statusCode(201).log().all();
+        responseLogOutputStream = new ByteArrayOutputStream();
+        responseLogPrintStream = new PrintStream(responseLogOutputStream);
+        RestAssured.filters(new ResponseLoggingFilter(responseLogPrintStream));
 
-		logger.info("Test01_post completed.");
-	}
+        logger.info("Relaxed HTTPS Validation and Request/Response Logging enabled for this class.");
+    }
 
-	@Test
-	public void test02_put() {
-		logger.info("Starting test02_put - PUT https://reqres.in/api/users/2");
+    private void logRequestResponseInReport(String testName) {
+        test.log(Status.INFO, "<details><summary><b>Request</b></summary><pre>" + requestLogOutputStream.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</pre></details>");
+        test.log(Status.INFO, "<details><summary><b>Response</b></summary><pre>" + responseLogOutputStream.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "</pre></details>");
+        // Clear the log streams for the next test
+        requestLogOutputStream.reset();
+        responseLogOutputStream.reset();
+    }
 
-		JSONObject req = new JSONObject();
-		req.put("name", "shivam");
-		req.put("job", "QA");
-		logger.info("Request body: " + req.toJSONString());
+    @Test
+    public void test01_post() {
+        String testName = "test01_post - POST https://reqres.in/api/users";
+        logger.info("Starting " + testName);
 
-		given().header("Content-Type", "application/json") // Corrected Content-Type
-				.contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString()).when()
-				.put("https://reqres.in/api/users/2").then().statusCode(200).log().all();
+        JSONObject req = new JSONObject();
+        req.put("name", "shivam");
+        req.put("job", "QA");
+        logger.info("Request body: " + req.toJSONString());
 
-		logger.info("Test02_put completed.");
-	}
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .post("https://reqres.in/api/users")
+        .then()
+                .statusCode(201);
 
-	@Test
-	public void test03_patch() {
-		logger.info("Starting test03_patch - PATCH https://reqres.in/api/users/2");
+        logRequestResponseInReport(testName);
 
-		JSONObject req = new JSONObject();
-		req.put("name", "shivam");
-		req.put("job", "QA");
-		logger.info("Request body: " + req.toJSONString());
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .post("https://reqres.in/api/users")
+        .then()
+                .log().all(); // Keep for console logging
 
-		given().header("Content-Type", "application/json") // Corrected Content-Type
-				.contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString()).when()
-				.patch("https://reqres.in/api/users/2").then().statusCode(200).log().all();
+        logger.info(testName + " completed.");
+    }
 
-		logger.info("Test03_patch completed.");
-	}
+    @Test
+    public void test02_put() {
+        String testName = "test02_put - PUT https://reqres.in/api/users/2";
+        logger.info("Starting " + testName);
 
-	@Test
-	public void test04_delete() {
-		logger.info("Starting test04_delete - DELETE https://reqres.in/api/users/2");
+        JSONObject req = new JSONObject();
+        req.put("name", "shivam");
+        req.put("job", "QA");
+        logger.info("Request body: " + req.toJSONString());
 
-		when().delete("https://reqres.in/api/users/2").then().statusCode(204).log().all();
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .put("https://reqres.in/api/users/2")
+        .then()
+                .statusCode(200);
 
-		logger.info("Test04_delete completed.");
-	}
+        logRequestResponseInReport(testName);
+
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .put("https://reqres.in/api/users/2")
+        .then()
+                .log().all(); // Keep for console logging
+
+        logger.info(testName + " completed.");
+    }
+
+    @Test
+    public void test03_patch() {
+        String testName = "test03_patch - PATCH https://reqres.in/api/users/2";
+        logger.info("Starting " + testName);
+
+        JSONObject req = new JSONObject();
+        req.put("name", "shivam");
+        req.put("job", "QA");
+        logger.info("Request body: " + req.toJSONString());
+
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .patch("https://reqres.in/api/users/2")
+        .then()
+                .statusCode(200);
+
+        logRequestResponseInReport(testName);
+
+        given().header("Content-Type", "application/json")
+                .contentType(ContentType.JSON).accept(ContentType.JSON).body(req.toJSONString())
+        .when()
+                .patch("https://reqres.in/api/users/2")
+        .then()
+                .log().all(); // Keep for console logging
+
+        logger.info(testName + " completed.");
+    }
+
+    @Test
+    public void test04_delete() {
+        String testName = "test04_delete - DELETE https://reqres.in/api/users/2";
+        logger.info("Starting " + testName);
+
+        when().delete("https://reqres.in/api/users/2")
+        .then()
+                .statusCode(204);
+
+        logRequestResponseInReport(testName);
+
+        when().delete("https://reqres.in/api/users/2")
+        .then()
+                .log().all(); // Keep for console logging
+
+        logger.info(testName + " completed.");
+    }
 }

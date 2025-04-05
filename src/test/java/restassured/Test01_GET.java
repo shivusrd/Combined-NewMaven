@@ -1,53 +1,96 @@
 package restassured;
 
-import java.net.HttpURLConnection;
+import com.aventstack.extentreports.Status;
+
+import baselibrary.Baselibrary;
+import io.restassured.RestAssured;
+import io.restassured.config.LogConfig;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.response.Response;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import baselibrary.Baselibrary;
-import io.restassured.RestAssured;
-import io.restassured.RestAssured.*;
-import io.restassured.response.Response;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+
 
 public class Test01_GET extends Baselibrary {
+
+    private ByteArrayOutputStream requestLogOutputStream;
+    private PrintStream requestLogPrintStream;
+    private ByteArrayOutputStream responseLogOutputStream;
+    private PrintStream responseLogPrintStream;
 
     @BeforeClass
     public void setupClass() {
         RestAssured.useRelaxedHTTPSValidation();
-        logger.info("Relaxed HTTPS Validation enabled for this class.");
+        RestAssured.config = RestAssured.config().logConfig(LogConfig.logConfig().enablePrettyPrinting(true));
+
+        requestLogOutputStream = new ByteArrayOutputStream();
+        requestLogPrintStream = new PrintStream(requestLogOutputStream);
+        RestAssured.filters(new RequestLoggingFilter(requestLogPrintStream));
+
+        responseLogOutputStream = new ByteArrayOutputStream();
+        responseLogPrintStream = new PrintStream(responseLogOutputStream);
+        RestAssured.filters(new ResponseLoggingFilter(responseLogPrintStream));
+
+        logger.info("Relaxed HTTPS Validation and Request/Response Logging enabled for this class.");
+    }
+
+    private void logRequestResponseInReport(String testName) {
+        String requestLogs = requestLogOutputStream.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+        String responseLogs = responseLogOutputStream.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+        test.log(Status.INFO, "<details><summary><b>Request</b></summary><pre>" + requestLogs + "</pre></details>");
+        test.log(Status.INFO, "<details><summary><b>Response</b></summary><pre>" + responseLogs + "</pre></details>");
+
+        // Clear the log streams for the next test
+        requestLogOutputStream.reset();
+        responseLogOutputStream.reset();
     }
 
     @Test
     void test01() {
-        logger.info("Starting test01 - GET https://reqres.in/api/users?page=2");
-        Response resp = RestAssured.get("https://reqres.in/api/users?page=2");
-        logger.info("Response Body: " + resp.getBody().asString());
-        logger.info("Response String: " + resp.asString());
-        logger.info("Status Code: " + resp.getStatusCode());
-        logger.info("Status Line: " + resp.getStatusLine());
-        logger.info("Content Type: " + resp.getHeader("content type"));
-        logger.info("Response Time: " + resp.getTime());
+        String testName = "test01 - GET https://reqres.in/api/users?page=2";
+        logger.info("Starting " + testName);
 
+        RestAssured.get("https://reqres.in/api/users?page=2");
+
+        logRequestResponseInReport(testName);
+
+        Response resp = RestAssured.get("https://reqres.in/api/users?page=2");
         int statusCode = resp.getStatusCode();
         Assert.assertEquals(statusCode, HttpURLConnection.HTTP_OK);
         logger.info("Assertion passed: Status code is 200.");
-        logger.info("Test01 completed.");
+        logger.info(testName + " completed.");
     }
 
     @Test
     void test02() {
-        logger.info("Starting test02 - GET https://reqres.in/api/users?page=2 (with logging)");
-        RestAssured.given().get("https://reqres.in/api/users?page=2").then().statusCode(200).log().all();
-        logger.info("Test02 completed.");
+        String testName = "test02 - GET https://reqres.in/api/users?page=2 (with logging)";
+        logger.info("Starting " + testName);
+
+        RestAssured.get("https://reqres.in/api/users?page=2").then().statusCode(200);
+
+        logRequestResponseInReport(testName);
+
+        logger.info(testName + " completed.");
     }
 
     @Test
     void test03() {
-        logger.info("Starting test03 - GET https://httpbin.org/ (with logging)");
-        RestAssured.given().get("https://httpbin.org/").then().statusCode(200).log().all();
-        logger.info("Test03 completed.");
+        String testName = "test03 - GET https://httpbin.org/ (with logging)";
+        logger.info("Starting " + testName);
+
+        RestAssured.get("https://httpbin.org/").then().statusCode(200);
+
+        logRequestResponseInReport(testName);
+
+        logger.info(testName + " completed.");
     }
 
 }
