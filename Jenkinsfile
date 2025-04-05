@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout') {
             agent any
             steps {
-                git credentialsId: 'd8f42486-d764-426f-92ed-636d5a803bde',
+                git credentialsId: 'fabb8915-2174-4691-a470-a17385b4930a',
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
@@ -26,7 +26,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'mvn clean install -B'
+                bat 'mvn clean install -B'
             }
             post {
                 always {
@@ -46,7 +46,7 @@ pipeline {
                     def testngXml = params.TESTNG_XML
                     echo "TESTNG_XML parameter value: ${testngXml}"
                     def mvnCommand = "mvn test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
-                    sh mvnCommand
+                    bat mvnCommand
                 }
             }
             post {
