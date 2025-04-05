@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     parameters {
         string(name: 'TESTNG_XML', defaultValue: 'XML/Bikewale.xml', description: 'Path to the TestNG XML file to execute')
@@ -12,57 +12,45 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            agent any
             steps {
                 git credentialsId: 'fabb8915-2174-4691-a470-a17385b4930a',
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
-        stage('Build and Test (Java)') {
-            agent {
-                docker {
-                    image 'maven:3.9.6-jdk-17'
-                    alwaysPull false // Only pull if the image is not present locally
-                }
-            }
+        stage('Build') {
             steps {
-                bat 'mvn clean install -B'
-            }
-            post {
-                always {
-                    cleanWs() // Clean the workspace after the stage
+                script {
+                    if (isUnix()) {
+                        sh 'mvn clean compile'
+                    } else {
+                        bat 'mvn clean compile'
+                    }
                 }
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'maven:3.9.6-jdk-17'
-                    alwaysPull false // Only pull if the image is not present locally
-                }
-            }
             steps {
                 script {
                     def testngXml = params.TESTNG_XML
-                    echo "TESTNG_XML parameter value: ${testngXml}"
+                    echo "TESTNG_XML parameter value: ${testngXml}" // For debugging
                     def mvnCommand = "mvn test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
-                    bat mvnCommand
+
+                    if (isUnix()) {
+                        sh mvnCommand
+                    } else {
+                        bat mvnCommand
+                    }
                 }
-            }
-            post {
-                always {
-                    cleanWs() // Clean the workspace after the stage
-                }
+                // No 'testng' step as we are only using Extent Reports
             }
         }
         stage('Post-build Actions') {
-            agent any
             steps {
-                archiveArtifacts 'reports/ExtentReport.html'
+                archiveArtifacts 'reports/ExtentReport.html' // Still good practice to archive
                 publishHTML([allowMissing: false,
-                             alwaysLinkToLastBuild: true,
+                             alwaysLinkToLastBuild: true, // Link to the report of the last build
                              keepAll: false,
-                             reportDir: 'reports',
+                             reportDir: 'reports', // The directory containing your HTML report in the workspace
                              reportFiles: 'ExtentReport.html',
                              reportName: 'Extent Report'])
             }
