@@ -21,15 +21,15 @@ pipeline {
         stage('Build and Test (Inside Docker)') {
             agent {
                 docker {
-                    image 'my-jenkins-dind' // Run this stage inside your custom Jenkins image with Docker
-                    alwaysPull false // Only pull if the image is not present
-                    reuseNode true // Keep the agent node for subsequent steps in this stage
+                    image 'my-jenkins-dind'
+                    alwaysPull false
+                    reuseNode true
                 }
             }
             steps {
-                sh 'docker --version' // Verify Docker is available
-                sh 'mvn --version'    // Verify Maven is available (should be in the base jenkins/maven image)
-                sh "docker run --rm -v $(pwd):/app -w /app my-maven-test-image mvn clean install -B -DtestngFile=${params.TESTNG_XML} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
+                sh 'docker --version'
+                sh 'mvn --version'
+                sh '''docker run --rm -v $(pwd):/app -w /app my-maven-test-image mvn clean install -B -DtestngFile=${params.TESTNG_XML} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}'''
             }
         }
         stage('Post-build Actions') {
