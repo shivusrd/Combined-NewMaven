@@ -17,19 +17,19 @@ pipeline {
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
-        stage('Build and Test') {
-            tools {
-                maven 'MAVEN_HOME' // Use the Maven tool configured in Global Tool Configuration
-            }
-            steps {
-                script {
-                    def testngXml = params.TESTNG_XML
-                    echo "TESTNG_XML parameter value: ${testngXml}"
-                    def mvnCommand = "mvn clean test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
-                    bat mvnCommand
-                }
-            }
+       stage('Build and Test') {
+    tools {
+        maven 'MAVEN_HOME' // Use the Maven tool configured in Global Tool Configuration
+    }
+    steps {
+        script {
+            def testngXml = params.TESTNG_XML
+            echo "TESTNG_XML parameter value: ${testngXml}"
+            def mvnCommand = "mvn clean test -DtestngFile=${testngXml} -Dbrowser=${params.BROWSER} -Durl=${params.URL} -DcaptureScreenshots=${params.CAPTURE_SCREENSHOTS} -DenableLogs=${params.ENABLE_LOGS} -DenableExtentReports=${params.ENABLE_EXTENT_REPORTS}"
+            sh mvnCommand
         }
+    }
+}
         stage('Post-build Actions') {
             steps {
                 archiveArtifacts 'reports/ExtentReport.html'
