@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'd8f42486-d764-426f-92ed-636d5a803bde',
+                git credentialsId: 'a6728bc9-9c97-49b7-854c-268fd3eb5c64',
                     url: 'https://github.com/shivusrd/Combined-NewMaven'
             }
         }
